@@ -25,5 +25,5 @@ urlpatterns = [
     path('quiz/<int:quiz_id>/', Questions.as_view()),
     path('add-quiz/', CreateQuizFormView.as_view()),
     path('', include('django.contrib.auth.urls')),
-    # path('quiz/<int:quiz_id>/edit-quiz/', EditQuizFormView.as_view()),
+    path('quiz/<int:quiz_id>/edit-quiz/', EditQuizFormView.as_view()),
 ]
