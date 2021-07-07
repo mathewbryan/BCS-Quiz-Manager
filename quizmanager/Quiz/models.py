@@ -12,7 +12,7 @@ class QuizModel(models.Model):
 # Database model for the question/ answer table
 class QuestionsModel(models.Model):
     quiz = models.ForeignKey('Quiz.QuizModel', on_delete=models.CASCADE)
-    question_title = models.CharField(max_length=200, null=False, blank=False)
+    question_title = models.CharField(max_length=200, null=False, blank=False, unique=True)
     question_number = models.IntegerField(null=True, blank=True)
     correct_answer = models.CharField(max_length=200, null=True, blank=True)
     answer_1 = models.CharField(max_length=200, null=False, blank=False)
