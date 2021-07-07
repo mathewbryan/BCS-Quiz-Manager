@@ -1,0 +1,21 @@
+
+<h1>{{quizzes}}</h1>
+<a href="edit-quiz/">Edit Quiz</a>
+<ol>
+{% for question in questions %}
+<br>
+    <li>{{question}}<br></li>
+    A) {{question.answer_1}}<br>
+    B) {{question.answer_2}}<br>
+    {% if question.answer_3 is not None %}
+        C) {{question.answer_3}}<br>
+    {% endif %}
+    {% if question.answer_ is not None %}
+        D) {{question.answer_4}}<br>
+        {% endif %}
+    {% if question.answer_5 is not None %}
+        E) {{question.answer_5}}<br>
+    {% endif %}
+    
+{% endfor %}
+</ol>

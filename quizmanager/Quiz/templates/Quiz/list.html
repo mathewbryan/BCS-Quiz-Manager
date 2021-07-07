@@ -1,0 +1,16 @@
+<h1>List Quizes</h1>
+<h2>
+    Select a quiz to view
+</h2>
+{% for quiz in quizzes %}
+    <a href="quiz/{{quiz.id}}/"> {{quiz}}</a> <br>
+    <br>
+    <!-- <ol>
+    {% for question in questions%}
+        {% if question.quiz.id == quiz.id %}
+            <li>{{question}}<br></li>
+            {% endif %}
+    {% endfor %}
+    <br>
+    </ol> -->
+{% endfor %}

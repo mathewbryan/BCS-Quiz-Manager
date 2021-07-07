@@ -1,0 +1,15 @@
+<form method="post"> {% csrf_token %}
+<h2>Add a New Quiz</h2>
+<input type='hidden' name='action' value='add_quiz'> 
+{{quiz_form.as_p}}
+<input type="submit" value="Save">
+</form>
+
+<form method="post"> {% csrf_token %}
+<h2>Add a New Question</h2>
+<h4>Please select a quiz to link questions to</h4>
+<input type='hidden' name='action' value='add_question'> 
+{{question_form.as_p}}
+<input type="submit" value="Save">
+</form>
+
