@@ -1,0 +1,11 @@
+{% include "Quiz/nav.html" %}
+
+<form method="post"> {% csrf_token %}
+<h2>Edit a Question</h2>
+<h4>Please select a quiz to link questions to</h4>
+<input type='hidden' name='action' value='edit_question'> 
+{{edit_question_form.as_p}}
+<input type="checkbox" name="delete-question">
+<label for="checkbox">Delete Question</label>
+<input type="submit" value="Save">
+</form>
