@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.forms import formset_factory
+from django.apps import apps
 from Quiz.models import *
 from Quiz.forms import *
 
@@ -23,12 +24,19 @@ class List(LoginRequiredMixin, TemplateView):
 
 class Questions(LoginRequiredMixin, TemplateView):
     template_name = "Quiz/questions.html"
-    
+
     def get_context_data(self, **kwargs):
-        
         context = super().get_context_data(**kwargs)
+
+        self.permissions = self.request.user.user_permissions.all()
+        if self.permissions.exists:
+            self.permissions_list = []
+            for perm in self.permissions:
+                 self.permissions_list.append(perm.name)
+
         context['quizzes'] = QuizModel.objects.get(id=self.kwargs['quiz_id'])
         context['questions'] = QuestionsModel.objects.filter(quiz=self.kwargs['quiz_id'])
+        context['permissions'] = self.permissions_list
 
         return context
 class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
@@ -72,6 +80,36 @@ class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateVi
         }
         return render(request, 'Quiz/add_quiz.html', context)
 
+class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    template_name = "Quiz/add_question.html"
+    form_classes = {'question_form': CreateQuestionForm,
+                    }
+
+    permission_required = ('can_edit_quiz','can_edit_questions','can_view_questions', 'can_view_answers')
+    
+    def get(self,request,*args,**kwargs):
+        question_form = CreateQuestionForm(initial={'quiz': self.kwargs['quiz_id']})
+        quizes = QuizModel.objects.all()
+    
+        context = {'question_form':question_form, 'quizes':quizes}
+        return render(request, 'Quiz/add_question.html', context)
+
+    def post(self, request):
+        question_form = CreateQuestionForm()
+        quizes = QuizModel.objects.all()
+
+        action = self.request.POST['action']
+       
+        if action == 'add_question':
+            question_form = CreateQuestionForm(request.POST)
+            if question_form.is_valid():
+                question_form.save()
+                context = {'question_form': question_form}
+                question_form = CreateQuestionForm()
+        context = {
+            'question_form': question_form,
+        }
+        return render(request, 'Quiz/add_quiz.html', context)
 class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = "Quiz/edit_quiz.html"
     form_classes = {'edit_quiz_form': EditQuizForm,
