@@ -55,7 +55,7 @@ class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateVi
         context = {'quiz_form': quiz_form, 'question_form':question_form, 'quizes':quizes}
         return render(request, 'Quiz/add_quiz.html', context)
 
-    def post(self, request):
+    def post(self, request, *args,**kwargs):
         quiz_form = CreateQuizForm()
         question_form = CreateQuestionForm()
         quizes = QuizModel.objects.all()
@@ -88,15 +88,17 @@ class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, Templa
     permission_required = ('can_edit_quiz','can_edit_questions','can_view_questions', 'can_view_answers')
     
     def get(self,request,*args,**kwargs):
-        question_form = CreateQuestionForm(initial={'quiz': self.kwargs['quiz_id']})
+        quiz_id = self.kwargs['quiz_id']
+        question_form = CreateQuestionForm(initial={'quiz': quiz_id})
         quizes = QuizModel.objects.all()
     
         context = {'question_form':question_form, 'quizes':quizes}
         return render(request, 'Quiz/add_question.html', context)
 
-    def post(self, request):
+    def post(self, request,*args,**kwargs):
+        quiz_id = self.kwargs['quiz_id']
         question_form = CreateQuestionForm()
-        quizes = QuizModel.objects.all()
+        quiz = QuizModel.objects.get(id=quiz_id)
 
         action = self.request.POST['action']
        
@@ -109,7 +111,7 @@ class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, Templa
         context = {
             'question_form': question_form,
         }
-        return render(request, 'Quiz/add_quiz.html', context)
+        return render(request, 'Quiz/add_question.html', context)
 class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = "Quiz/edit_quiz.html"
     form_classes = {'edit_quiz_form': EditQuizForm,
