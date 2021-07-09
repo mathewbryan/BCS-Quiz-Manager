@@ -1,17 +1,25 @@
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
+<style>
+    img {
+        height: 200px;
+        width: 200px;
+    }
+</style>
 {% include "Quiz/nav.html" %}
-<h1>List Quizes</h1>
-<h2>
-    Select a quiz to view
-</h2>
-{% for quiz in quizzes %}
-    <a href="quiz/{{quiz.id}}/"> {{quiz}}</a> <br>
-    <br>
-    <!-- <ol>
-    {% for question in questions%}
-        {% if question.quiz.id == quiz.id %}
-            <li>{{question}}<br></li>
-            {% endif %}
-    {% endfor %}
-    <br>
-    </ol> -->
-{% endfor %}
+
+<body>
+<section class="quiz-list">
+    <div>
+        <img src={% static '/images/quiz-logo.jpg' %}>
+        <h1>Quiz Manager</h1>
+        <h3>
+            Select a quiz to view:
+        </h3>
+        {% for quiz in quizzes %}
+            <a href="quiz/{{quiz.id}}/"> {{quiz}}</a> <br>
+            <br>
+        {% endfor %}
+    </div>
+</section>
+</body>

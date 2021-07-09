@@ -1,4 +1,8 @@
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
 
+<section class="login-container">
+  <h1>Quiz Manager</h1>
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
@@ -24,9 +28,10 @@
         <td>{{ form.password }}</td>
       </tr>
     </table>
-    <input type="submit" value="login" />
+    <input id="login" type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+  </section>

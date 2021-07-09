@@ -1,6 +1,10 @@
-{% include "Quiz/nav.html" %}
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
 
-<h1>{{quizzes}}</h1>
+
+{% include "Quiz/nav.html" %}
+<section class="questions-container">
+<h1>{{quizzes}}</h1>    
 {% if 'can_edit_quiz' in permissions.name or request.user.is_superuser %}
     <a href="edit-quiz/">Edit Quiz Name</a>
 {%endif%}
@@ -8,7 +12,8 @@
 {% for question in questions %}
 <br>
     <li>{{question}}  <br></li>
-    {% if 'can_view_answers' in permissions.name or request.user.is_superuser %}
+    {% if 'can_view_answers' in permissions or request.user.is_superuser %}
+    <div class="answers-container">
         A) {{question.answer_1}}<br>
         B) {{question.answer_2}}<br>
         {% if question.answer_3 is not None %}
@@ -16,17 +21,24 @@
         {% endif %}
         {% if question.answer_4 is not None %}
             D) {{question.answer_4}}<br>
-            {% endif %}
+        {% endif %}
         {% if question.answer_5 is not None %}
             E) {{question.answer_5}}<br>
         {% endif %}
+    </div>
+        <br>
             {% if 'can_edit_questions' in permissions.name or request.user.is_superuser %}
                 <a href="edit-question/{{question.id}}/">Edit Question</a>
             {%endif%}
+            <br>
         {%endif%}
 {% endfor %}
 <br>
+<br>
+<br>
 {% if 'can_edit_quiz' in permissions.name or request.user.is_superuser %}
+<h3>Add a new question to the selected quiz:</h3>
     <a href="/add-question/{{quizzes.id}}">Add Question</a>
 {%endif%}
 </ol>
+</section>

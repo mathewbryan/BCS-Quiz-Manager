@@ -1,0 +1,60 @@
+h1, h2, h3, label, li, ol, ul {
+    color:#383b47;
+}
+a { 
+    text-decoration: none; 
+    color:#383b47;
+}
+input[type=submit]{
+    background-color: lightgray;
+    border-radius:  5px;
+    width: 100px;
+}
+.login-container{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    top: 40%;
+}
+.login-container input {
+    border-radius: 7px;
+    width: 350px;
+}
+.login-container #login {
+    border-radius: 7px;
+    width: auto;
+}
+.quiz-list { 
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.questions-container{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.questions-container ol {
+    padding-left: 0px;
+}
+.answers-container{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+}

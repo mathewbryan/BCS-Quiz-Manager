@@ -1,4 +1,7 @@
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
 {% include "Quiz/nav.html" %}
+<section class="form-container">
 <form method="post"> {% csrf_token %}
 <h2>Add a New Quiz</h2>
 <input type='hidden' name='action' value='add_quiz'> 
@@ -13,4 +16,4 @@
 {{question_form.as_p}}
 <input type="submit" value="Save">
 </form>
-
+</section>

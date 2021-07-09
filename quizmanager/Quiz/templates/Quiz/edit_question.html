@@ -1,5 +1,7 @@
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
 {% include "Quiz/nav.html" %}
-
+<section class="form-container">
 <form method="post"> {% csrf_token %}
 <h2>Edit a Question</h2>
 <h4>Please select a quiz to link questions to</h4>
@@ -9,3 +11,4 @@
 <label for="checkbox">Delete Question</label>
 <input type="submit" value="Save">
 </form>
+</section>
