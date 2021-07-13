@@ -1,5 +1,5 @@
 from django.http.response import HttpResponsePermanentRedirect, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -10,6 +10,14 @@ from Quiz.models import *
 from Quiz.forms import *
 
 # Create your views here.
+
+# Redirect users to the List view if they do not have the correct permissions
+class UserAccessMixin(PermissionRequiredMixin):
+    def dispatch(self, request, *args,**kwargs):
+        if not self.has_permission():
+            return redirect('/')
+        return super(UserAccessMixin, self).dispatch(request, *args, **kwargs)
+
 class List(LoginRequiredMixin, TemplateView):
     template_name = "Quiz/list.html"
     login_url = '/login/'
@@ -40,14 +48,15 @@ class Questions(LoginRequiredMixin, TemplateView):
         context['permissions'] = self.permissions_list
 
         return context
-class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+class CreateQuizFormView(LoginRequiredMixin, UserAccessMixin, TemplateView):
     template_name = "Quiz/add_quiz.html"
     form_classes = {'quiz_form': CreateQuizForm,
                     'question_form': CreateQuestionForm,
                     }
 
     permission_required = ('can_edit_quiz','can_edit_questions','can_view_questions', 'can_view_answers')
-    
+    permission_denied_message = "Permission Denied - You do not have the correct level of permissions"
+
     def get(self,request,*args,**kwargs):
         quiz_form = CreateQuizForm()
         question_form = CreateQuestionForm()
@@ -83,13 +92,14 @@ class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateVi
         # Redirect to main page on submition
         return HttpResponsePermanentRedirect("/ ")
 
-class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+class CreateQuestionFormView(LoginRequiredMixin, UserAccessMixin, TemplateView):
     template_name = "Quiz/add_question.html"
     form_classes = {'question_form': CreateQuestionForm,
                     }
 
     permission_required = ('can_edit_quiz','can_edit_questions','can_view_questions', 'can_view_answers')
-    
+    permission_denied_message = "Permission Denied - You do not have the correct level of permissions"
+
     def get(self,request,*args,**kwargs):
         quiz_id = self.kwargs['quiz_id']
         question_form = CreateQuestionForm(initial={'quiz': quiz_id})
@@ -118,13 +128,14 @@ class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, Templa
         }
         # Redirect to main page on submition 
         return HttpResponsePermanentRedirect("/ ")
-class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+class EditQuizFormView(LoginRequiredMixin, UserAccessMixin, TemplateView):
     template_name = "Quiz/edit_quiz.html"
     form_classes = {'edit_quiz_form': EditQuizForm,
                     'edit_question_form': EditQuestionForm,
                     }
     
     permission_required = ('can_edit_quiz','can_edit_questions','.can_view_questions', 'can_view_answers')
+    permission_denied_message = "Permission Denied - You do not have the correct level of permissions"
 
     def get(self,request,*args,**kwargs):
         quiz_id = self.kwargs['quiz_id']
@@ -167,13 +178,14 @@ class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView
         # Redirect to previous page on submition
         return HttpResponsePermanentRedirect(f"/quiz/{quiz_id}/")
 
-class EditQuestionFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
+class EditQuestionFormView(LoginRequiredMixin,UserAccessMixin, TemplateView):
     template_name = "Quiz/edit_question.html"
     form_classes = {'edit_quiz_form': EditQuizForm,
                     'edit_question_form': EditQuestionForm,
                     }
 
     permission_required = ('can_edit_questions','.can_view_questions', 'can_view_answers')
+    permission_denied_message = "Permission Denied - You do not have the correct level of permissions"
 
     def get(self,request,*args,**kwargs):
         quiz_id = self.kwargs['quiz_id']
