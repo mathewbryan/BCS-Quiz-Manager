@@ -1,7 +1,16 @@
 {% load static %}
 <link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
-
+<style>
+    .login-container img {
+        height: 250px;
+        width: 250px;
+        position: relative;
+        left: 10px;
+}
+    }
+</style>
 <section class="login-container">
+  <img src={% static '/images/quiz-logo.jpg' %}>
   <h1>Quiz Manager</h1>
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>

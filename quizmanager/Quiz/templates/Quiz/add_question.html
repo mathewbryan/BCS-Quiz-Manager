@@ -10,5 +10,6 @@
 <input type='hidden' name='action' value='add_question'> 
 {{question_form.as_p}}
 <input type="submit" value="Save">
+<button class="back-button" onclick="location.href='/quiz/{{question_form.initial.quiz}}';">Back</button>
 </form>
 </section>

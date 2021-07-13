@@ -20,7 +20,7 @@ class CreateQuestionForm(forms.ModelForm):
     answer_5 = forms.CharField(required=False,widget=forms.TextInput(attrs={'size': '50'}))
     class Meta:
         model = QuestionsModel
-        fields = ['quiz', 'question_title', 'answer_1', 'answer_2','answer_3','answer_4','answer_5',]
+        fields = ['quiz', 'question_number', 'question_title', 'answer_1', 'answer_2','answer_3','answer_4','answer_5',]
 
 class EditQuizForm(forms.ModelForm):
     quiz_title = forms.CharField(widget=forms.TextInput(attrs={'size': '50'}))
@@ -37,4 +37,4 @@ class EditQuestionForm(forms.ModelForm):
     answer_5 = forms.CharField(required=False,widget=forms.TextInput(attrs={'size': '50'}))
     class Meta:
         model = QuestionsModel
-        fields = ['quiz', 'question_title', 'answer_1', 'answer_2','answer_3','answer_4','answer_5',]
+        fields = ['quiz','question_number', 'question_title', 'answer_1', 'answer_2','answer_3','answer_4','answer_5',]

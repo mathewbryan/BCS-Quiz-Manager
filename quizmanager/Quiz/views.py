@@ -1,5 +1,4 @@
-from collections import UserDict, UserList
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
@@ -16,6 +15,7 @@ class List(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
     redirect_field_name = 'Quiz/login.html'
 
+    # Creating view context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['quizzes'] = QuizModel.objects.all()
@@ -25,6 +25,7 @@ class List(LoginRequiredMixin, TemplateView):
 class Questions(LoginRequiredMixin, TemplateView):
     template_name = "Quiz/questions.html"
 
+    # Creating view context
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -35,7 +36,7 @@ class Questions(LoginRequiredMixin, TemplateView):
                  self.permissions_list.append(perm.name)
 
         context['quizzes'] = QuizModel.objects.get(id=self.kwargs['quiz_id'])
-        context['questions'] = QuestionsModel.objects.filter(quiz=self.kwargs['quiz_id'])
+        context['questions'] = QuestionsModel.objects.filter(quiz=self.kwargs['quiz_id']).order_by('question_number')
         context['permissions'] = self.permissions_list
 
         return context
@@ -55,6 +56,7 @@ class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateVi
         context = {'quiz_form': quiz_form, 'question_form':question_form, 'quizes':quizes}
         return render(request, 'Quiz/add_quiz.html', context)
 
+    # Handling the form post request
     def post(self, request, *args,**kwargs):
         quiz_form = CreateQuizForm()
         question_form = CreateQuestionForm()
@@ -78,7 +80,8 @@ class CreateQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateVi
             'quiz_form': quiz_form,
             'question_form': question_form,
         }
-        return render(request, 'Quiz/add_quiz.html', context)
+        # Redirect to main page on submition
+        return HttpResponsePermanentRedirect("/ ")
 
 class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = "Quiz/add_question.html"
@@ -95,11 +98,12 @@ class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, Templa
         context = {'question_form':question_form, 'quizes':quizes}
         return render(request, 'Quiz/add_question.html', context)
 
+    # Handling the form post request
     def post(self, request,*args,**kwargs):
         quiz_id = self.kwargs['quiz_id']
         question_form = CreateQuestionForm()
         quiz = QuizModel.objects.get(id=quiz_id)
-
+    
         action = self.request.POST['action']
        
         if action == 'add_question':
@@ -110,8 +114,10 @@ class CreateQuestionFormView(LoginRequiredMixin, PermissionRequiredMixin, Templa
                 question_form = CreateQuestionForm()
         context = {
             'question_form': question_form,
+            "quiz_id":quiz_id   
         }
-        return render(request, 'Quiz/add_question.html', context)
+        # Redirect to main page on submition 
+        return HttpResponsePermanentRedirect("/ ")
 class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = "Quiz/edit_quiz.html"
     form_classes = {'edit_quiz_form': EditQuizForm,
@@ -126,12 +132,11 @@ class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView
         questions = QuestionsModel.objects.filter(quiz=quiz_id)
         edit_quiz_form = EditQuizForm(instance=quizes)
         edit_question_form = EditQuestionForm()
-        # edit_question_formset_factory = formset_factory(EditQuestionForm, extra=10)
-
     
         context = {'edit_quiz_form': edit_quiz_form, 'edit_question_form':edit_question_form, 'quizes':quizes}
         return render(request, 'Quiz/edit_quiz.html', context)
 
+    # Handling the form post request
     def post(self, request, *args, **kwargs):
         edit_quiz_form = EditQuizForm()
         edit_question_form = EditQuestionForm()
@@ -156,18 +161,11 @@ class EditQuizFormView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView
                 # TODO redirect somewhere else when form saved
                 edit_quiz_form = EditQuizForm()
                 
-        # elif action == 'add_question':
-        #     edit_question_form = EditQuestionForm(request.POST)
-        #     if edit_question_form.is_valid():
-        #         edit_question_form.save()
-        #         context = {'edit_question_form': edit_question_form}
-        #         # TODO redirect somewhere else when form saved
-        #         edit_question_form = EditQuestionForm()
         context = {
             'edit_quiz_form': edit_quiz_form,
-            # 'edit_question_form': edit_question_form,
         }
-        return render(request, 'Quiz/edit_quiz.html', context)
+        # Redirect to previous page on submition
+        return HttpResponsePermanentRedirect(f"/quiz/{quiz_id}/")
 
 class EditQuestionFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "Quiz/edit_question.html"
@@ -184,12 +182,11 @@ class EditQuestionFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateV
         # questions = QuestionsModel.objects.filter(quiz=quiz_id)
         question = QuestionsModel.objects.get(id=queistion_id)
         edit_question_form = EditQuestionForm(instance=question)
-
-
     
         context = {'edit_question_form':edit_question_form, 'quizes':quizes}
         return render(request, 'Quiz/edit_question.html', context)
     
+    # Handling the form post request
     def post(self, request, *args, **kwargs):
         queistion_id = self.kwargs['question_id']
         edit_question_form = EditQuestionForm()
@@ -215,19 +212,5 @@ class EditQuestionFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateV
         context = {
             'edit_question_form': edit_question_form,
         }
-        return render(request, 'Quiz/edit_question.html', context)
-# def create_quiz_form(request):
-#     form = CreateQuizForm()
-#     form2 = CreateQuestionForm()
-#     quizes = QuizModel.objects.all()
-#     if request.method == 'POST':
-#         form = CreateQuizForm(request.POST)
-#         form2 = CreateQuestionForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             context = {'form': form}  
-#         if form2.is_valid():
-#             form2.save()
-#             context = {'form2': form2}  
-#     context = {'form': form, 'form2':form2, 'quizes':quizes}
-#     return render(request, 'Quiz/add_quiz.html', context)
+        # Redirect to previous page on submition
+        return HttpResponsePermanentRedirect(f"/quiz/{quiz_id}/")

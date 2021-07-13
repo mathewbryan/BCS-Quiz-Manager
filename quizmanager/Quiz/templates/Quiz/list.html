@@ -16,10 +16,13 @@
         <h3>
             Select a quiz to view:
         </h3>
+        <div class="list-container">
+        <ul>
         {% for quiz in quizzes %}
-            <a href="quiz/{{quiz.id}}/"> {{quiz}}</a> <br>
-            <br>
+            <li style="list-style-type:none;"><a href="quiz/{{quiz.id}}/"> {{quiz}}</a></li>
         {% endfor %}
+        </ul>
+        </div>
     </div>
 </section>
 </body>
