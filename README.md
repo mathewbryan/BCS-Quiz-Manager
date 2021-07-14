@@ -25,4 +25,8 @@ Start the application using \
 `python manage.py runserver` \
 The appliction can then be accessed via: localhost:8000 \
 Access the admin page using the path /admin/
-
+If this is the first time running the project, you will need to create some user groups to manage the permissions. 
+Log in to http://localhost:8000/admin/auth/group/ and add a group for Edit, Restricted & View
+An Edit user can have all permissions
+A View user should have can_view_answers & can_view_questions
+A Restricted user should have can_view_questions
