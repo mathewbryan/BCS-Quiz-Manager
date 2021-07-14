@@ -1,7 +1,6 @@
 from django.db import models
 
-# Create your models here.
-# Database model for the quiz table
+# Database model for the quiz table & permissions
 class QuizModel(models.Model):
     quiz_title = models.CharField(max_length=150, null=False, blank=False, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -14,7 +13,7 @@ class QuizModel(models.Model):
     
     def __str__(self):
         return self.quiz_title
-# Database model for the question/ answer table
+# Database model for the question/ answer table & permissions
 class QuestionsModel(models.Model):
     quiz = models.ForeignKey('Quiz.QuizModel', on_delete=models.CASCADE)
     question_title = models.CharField(max_length=200, null=False, blank=False)
