@@ -47,6 +47,5 @@ class TestQuestionForm(TestCase):
             "answer_2": "This is an answer 2",
             "answer_3": "Answer 3",
             }
-        print(form_data)
         form = CreateQuestionForm(data=form_data)
         self.assertTrue(form.is_valid())

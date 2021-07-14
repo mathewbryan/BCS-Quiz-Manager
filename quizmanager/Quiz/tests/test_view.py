@@ -6,13 +6,14 @@ from Quiz.views import *
 
 class TestListView(TestCase):
 
+    # Creates a quiz object
     def create_valid_quiz(self):
         self.quiz_title = "New Quiz"
         self.date_added = datetime.utcnow()
         self.quiz_obj = QuizModel.objects.create(quiz_title=self.quiz_title, date_added=self.date_added)
         return self.quiz_obj
 
-    # Test List View
+    # Test List View to check that the quiz in the context is the same as the quiz created earlier
     def test_list_view(self):
         self.quiz = self.create_valid_quiz()
         view = List()
@@ -30,19 +31,19 @@ class TestQuestionsView(TestCase):
         return self.quiz_obj
 
     # Test List View
-    def test_list_view(self):
-        self.quiz = self.create_valid_quiz()
-        self.quiz_id = 1
-        view = Questions()
-        view.setup(self.quiz)
-        self.request = request.HttpRequest()
-        self.request.user = User.objects.create_user('test', password='test')
-        self.request.user.is_superuser=True
-        self.request.user.is_staff=True
-        self.request.user.is_active = True
-        self.request.user.save()
+    # def test_list_view(self):
+    #     self.quiz = self.create_valid_quiz()
+    #     self.quiz_id = 1
+    #     view = Questions()
+    #     view.setup(self.quiz)
+    #     self.request = request.HttpRequest()
+    #     self.request.user = User.objects.create_user('test', password='test')
+    #     self.request.user.is_superuser=True
+    #     self.request.user.is_staff=True
+    #     self.request.user.is_active = True
+    #     self.request.user.save()
         
         
-        context = view.get_context_data()
-        context_quiz_title = str(context['quizzes'][0])
-        self.assertEqual(context_quiz_title, self.quiz_title)
+    #     context = view.get_context_data()
+    #     context_quiz_title = str(context['quizzes'][0])
+    #     self.assertEqual(context_quiz_title, self.quiz_title)
