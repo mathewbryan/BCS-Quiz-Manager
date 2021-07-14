@@ -28,7 +28,7 @@ class TestQuestionForm(TestCase):
 
     def test_form_invalid(self):
         form_data = {
-            "question_title":"Question number 1",
+            "question_title": "Question number 1",
             "question_number": "Not a number",
             "answer_1":"",
             "answer_2": "",
@@ -36,3 +36,17 @@ class TestQuestionForm(TestCase):
             }
         form = CreateQuestionForm(data=form_data)
         self.assertFalse(form.is_valid())
+
+    def test_form_valid(self):
+        quiz = QuizModel.objects.create(quiz_title="Test Quiz")
+        form_data = {
+            "quiz": quiz,
+            "question_title": "Question number 12",
+            "question_number": 2,
+            "answer_1": "This is an answer",
+            "answer_2": "This is an answer 2",
+            "answer_3": "Answer 3",
+            }
+        print(form_data)
+        form = CreateQuestionForm(data=form_data)
+        self.assertTrue(form.is_valid())
