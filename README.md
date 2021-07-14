@@ -9,7 +9,7 @@ This project uses a PSQL Database, this will need to be installed prior to runni
 `CREATE DATABASE quizdb;`\
 `CREATE USER quizdb WITH PASSWORD 'password';`\
 `GRANT ALL PRIVILEGES ON DATABASE quizdb TO quizdb;`\
-`\q`\
+`\q`
 
 ## To run the project localy:
 Clone the repository to your local machine \
