@@ -20,8 +20,7 @@ Activate your virtual environment and install the project requirements using \
 Create a superuser:
 `python manage.py create_superuser`
 
-###
-Start the application using \
+### Start the application using \
 `python manage.py runserver` \
 The appliction can then be accessed via: localhost:8000 \
 Access the admin page using the path /admin/
@@ -30,3 +29,12 @@ Log in to http://localhost:8000/admin/auth/group/ and add a group for Edit, Rest
 An Edit user can have all permissions
 A View user should have can_view_answers & can_view_questions
 A Restricted user should have can_view_questions
+
+## Developing the application
+All view logic is stored within the views.py file \
+HTML files corresponding to the views can be found in templates directory
+Routing is defined in urls.py \
+All form logic is within the forms.py file \
+Models are defined in models.py \
+Styling is within a single style.css file in Quiz/static/css/style.css \
+
