@@ -64,6 +64,7 @@ input[type=submit]{
 }
 .questions-container ol {
     padding-left: 0px;
+    list-style-position: inside;
 }
 .answers-container{
     display: flex;

@@ -1,12 +1,11 @@
 {% load static %}
 <link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
 
-
 {% include "Quiz/nav.html" %}
 <section class="questions-container">
 <h1>{{quizzes}}</h1>    
 {% if 'can_edit_quiz' in permissions.name or request.user.is_superuser %}
-    <a href="edit-quiz/">Edit Quiz Name</a>
+<button class="back-button" onclick="location.href='edit-quiz/';"> Edit Quiz Name</button>
 {%endif%}
 <ol>
 {% for question in questions %}
@@ -28,17 +27,15 @@
     </div>
         <br>
             {% if 'can_edit_questions' in permissions.name or request.user.is_superuser %}
-                <a href="edit-question/{{question.id}}/">Edit Question</a>
+                <button class="back-button" onclick="location.href='edit-question/{{question.id}}/';"> Edit Question</button>
             {%endif%}
             <br>
         {%endif%}
 {% endfor %}
 <br>
-<br>
-<br>
 {% if 'can_edit_quiz' in permissions.name or request.user.is_superuser %}
-<h3>Add a new question to the selected quiz:</h3>
-    <a href="/add-question/{{quizzes.id}}">Add Question</a>
+<h3>Add a new question to the selected quiz</h3>
+   <button class="back-button" onclick="location.href='/add-question/{{quizzes.id}}';">Add Question</button>
 {%endif%}
 </ol>
 </section>
