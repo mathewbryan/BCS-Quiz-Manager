@@ -32,7 +32,7 @@ A Restricted user should have can_view_questions
 
 ## Developing the application
 All view logic is stored within the views.py file \
-HTML files corresponding to the views can be found in templates directory
+HTML files corresponding to the views can be found in templates directory \
 Routing is defined in urls.py \
 All form logic is within the forms.py file \
 Models are defined in models.py \
